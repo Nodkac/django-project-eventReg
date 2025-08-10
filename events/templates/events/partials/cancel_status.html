@@ -1,0 +1,17 @@
+{% if promoted %}
+  <div>✅ Cancelled. Also promoted your waitlist for “{{ promoted.event.title }}”.</div>
+  <script>showToast("Cancelled. Promoted one waitlisted event ✅", "success");</script>
+{% else %}
+  <div>✅ Cancelled.</div>
+  <script>showToast("Registration cancelled.", "info");</script>
+{% endif %}
+
+{# Update the “Spots left” badges for affected events #}
+{% if updates %}
+  {% for eid, spots in updates %}
+    <span id="spots-{{ eid }}" hx-swap-oob="true"
+          class="pill bg-slate-900/5 ring-slate-300 text-slate-900 font-semibold">
+      Spots left: {{ spots }}
+    </span>
+  {% endfor %}
+{% endif %}

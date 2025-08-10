@@ -1,0 +1,24 @@
+<div>
+    {% if all_waitlist %}
+      <div class="font-medium">
+        Team received. All members placed on waitlist
+        {% if reason == 'caplimit' %}(cap limit reached for at least one member){% elif reason == 'soldout' %}(not enough seats){% elif reason == 'already_in_event' %}(a member is already in this event){% endif %}.
+      </div>
+      <script>showToast("Team placed on waitlist.", "warn");</script>
+    {% else %}
+      <div class="font-medium">Team confirmed!</div>
+      <script>showToast("Team confirmed ✅", "success");</script>
+    {% endif %}
+  
+    <table class="mt-2 text-sm">
+      <tr><th class="pr-4 text-left">Member</th><th>Status</th></tr>
+      {% for email, st in rows %}
+        <tr><td class="pr-4">{{ email }}</td><td>{{ st }}</td></tr>
+      {% endfor %}
+    </table>
+  
+    <div class="text-xs text-slate-500 mt-2">
+      Reminder: Each person can only have 2 confirmed events.
+    </div>
+  </div>
+  

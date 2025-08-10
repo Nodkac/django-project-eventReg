@@ -1,0 +1,37 @@
+{% if status == "confirmed" %}
+  <div>
+    ✅ Registered!
+    {% if reg_id %}
+    <form hx-post="/registrations/{{ reg_id }}/cancel/" hx-target="this" class="inline">
+      {% csrf_token %}
+      <button class="underline ml-2">Cancel</button>
+    </form>
+    {% endif %}
+  </div>
+  <script>showToast("Registered successfully 🎉", "success");</script>
+
+{% elif status == "waitlist" %}
+  {% if reason == "caplimit" %}
+    <div>⏳ Added to waitlist (you’re already at the 2 confirmed events limit).</div>
+    <script>showToast("You’re at the 2 confirmed limit — added to waitlist.", "warn");</script>
+  {% else %}
+    <div>⏳ Added to waitlist.</div>
+    <script>showToast("Added to waitlist.", "info");</script>
+  {% endif %}
+
+{% elif status == "soldout" %}
+  <div>❌ Sold out.</div>
+  <script>showToast("Event is sold out.", "error");</script>
+
+{% elif status == "already" %}
+  <div>ℹ️ You’re already registered for this event.</div>
+  <script>showToast("You’re already registered for this event.", "info");</script>
+{% endif %}
+
+{# --- live update spots with an out-of-band swap --- #}
+{% if event and spots_left|default_if_none:None %}
+  <span id="spots-{{ event.id }}" hx-swap-oob="true"
+        class="pill bg-slate-900/5 ring-slate-300 text-slate-900 font-semibold">
+    Spots left: {{ spots_left }}
+  </span>
+{% endif %}
